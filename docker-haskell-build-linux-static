@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Alpine-based dockerized static GHC/stack build
+
+#
+# Tested with stackage lts-7.3
+#
+
+set -e
+set -x
+
+docker-haskell-platform-alpine stack install --test --ghc-options '-optl-static -fPIC -optc-Os'
+
+# compress the last binary installed
+E=`ls -rt ~/.alpine/local/bin | tail -1`
+
+docker-haskell-platform-alpine upx --best $HOME/.local/bin/$E

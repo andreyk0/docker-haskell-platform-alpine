@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#
+# Launches tools from docker haskel platform image.
+#
+
+# docker-machine systems will link the docker daemon to the mst container via tcp
+if [ $DOCKER_HOST ] ;
+  then HOST_DOCKER_LINKAGE="-e DOCKER_HOST=$DOCKER_HOST $HOST_DOCKER_LINKAGE"
+fi;
+
+if [ $DOCKER_TLS_VERIFY ] ;
+  then HOST_DOCKER_LINKAGE="-e DOCKER_TLS_VERIFY=$DOCKER_TLS_VERIFY $HOST_DOCKER_LINKAGE"
+fi;
+
+if [ $DOCKER_CERT_PATH ] ;
+  then HOST_DOCKER_LINKAGE="-e DOCKER_CERT_PATH=$DOCKER_CERT_PATH $HOST_DOCKER_LINKAGE"
+fi;
+
+
+exec docker run \
+  -it \
+  --rm \
+  -e PATH=/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+  -e HOME=$HOME \
+  $HOST_DOCKER_LINKAGE \
+  -v $HOME/.alpine/stack:$HOME/.stack \
+  -v $HOME/.alpine/local:$HOME/.local \
+  -v $HOME:$HOME \
+  -w $(pwd -P) \
+  --user $(id -u):$(id -g) \
+  andreyk0/docker-haskell-platform-alpine:latest "$@"
