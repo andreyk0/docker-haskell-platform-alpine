@@ -9,7 +9,7 @@
 set -e
 set -x
 
-docker-haskell-platform-alpine stack install --ghc-options '-optl-static -fPIC -optc-Os'
+docker-haskell-platform-alpine stack install  --system-ghc --skip-ghc-check --ghc-options '-optl-static -fPIC -optc-Os'
 
 # compress the last binary installed
 E=`ls -rt ~/.alpine/local/bin | tail -1`

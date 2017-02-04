@@ -12,14 +12,13 @@ RUN echo "https://s3-us-west-2.amazonaws.com/alpine-ghc/8.0" >> /etc/apk/reposit
 ADD https://raw.githubusercontent.com/mitchty/alpine-ghc/master/mitch.tishmack%40gmail.com-55881c97.rsa.pub \
     /etc/apk/keys/mitch.tishmack@gmail.com-55881c97.rsa.pub
 RUN apk update
-RUN apk add alpine-sdk git ca-certificates ghc gmp-dev zlib-dev gnupg
+RUN apk add alpine-sdk git ca-certificates ghc gmp-dev zlib-dev linux-headers
 # GRAB A RECENT BINARY OF STACK
-ADD https://s3.amazonaws.com/static-stack/stack-1.1.2-x86_64 /usr/local/bin/stack
-RUN chmod 755 /usr/local/bin/stack
-
+ADD https://github.com/commercialhaskell/stack/releases/download/v1.3.2/stack-1.3.2-linux-x86_64-static.tar.gz  /stack.tgz
+RUN tar xvf /stack.tgz && mv -v /stack-*/stack /usr/local/bin/stack && chmod 755 /usr/local/bin/stack
 
 # FIX https://bugs.launchpad.net/ubuntu/+source/gcc-4.4/+bug/640734
-WORKDIR /usr/lib/gcc/x86_64-alpine-linux-musl/5.3.0/
+WORKDIR /usr/lib/gcc/x86_64-alpine-linux-musl/6.2.1/
 RUN cp crtbeginT.o crtbeginT.o.orig
 RUN cp crtbeginS.o crtbeginT.o
 
