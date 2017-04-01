@@ -9,7 +9,8 @@
 set -e
 set -x
 
-docker-haskell-platform-alpine stack install  --system-ghc --skip-ghc-check --ghc-options '-optl-static'
+# STACK_OPTS are defined in the container
+docker-haskell-platform-alpine stack install '$STACK_OPTS'
 
 # compress the last binary installed
 E=`ls -rt ~/.alpine/local/bin | tail -1`
