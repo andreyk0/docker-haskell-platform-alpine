@@ -21,7 +21,7 @@ fi;
 exec docker run \
   -it \
   --rm \
-  -e PATH=/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+  -e PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
   -e HOME=$HOME \
   $HOST_DOCKER_LINKAGE \
   -v $HOME/.alpine/stack:$HOME/.stack \
