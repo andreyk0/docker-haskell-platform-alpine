@@ -27,15 +27,4 @@ RUN apk update \
 # Haskell stack
 RUN wget -qO- https://get.haskellstack.org/ | sh
 
-
-# Stack options for static compilation,
-# can be used as an environmental variable
-# by scripts running inside a container.
-#
-# E.g.
-#    stack --local-bin-path $(TARGET) install $(STACK_OPTS) package
-#
-
-ENV STACK_OPTS --system-ghc --skip-ghc-check --ghc-options '-optl-static'
-
 CMD [ "/bin/bash" ]

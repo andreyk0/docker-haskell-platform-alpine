@@ -23,6 +23,7 @@ exec docker run \
   --rm \
   -e PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
   -e HOME=$HOME \
+  -e STACK_OPTS="--system-ghc --allow-different-user --skip-ghc-check --ghc-options '-optl-static'" \
   $HOST_DOCKER_LINKAGE \
   -v $HOME/.alpine/stack:$HOME/.stack \
   -v $HOME/.alpine/local:$HOME/.local \
