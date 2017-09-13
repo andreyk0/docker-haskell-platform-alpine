@@ -19,6 +19,7 @@ RUN apk update \
         ghc@testing \
         git \
         gmp-dev \
+        gnupg \
         libffi-dev \
         linux-headers \
         upx@testing \
