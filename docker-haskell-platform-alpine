@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 #
 # Launches tools from docker haskel platform image.
 #
@@ -17,17 +19,24 @@ if [ $DOCKER_CERT_PATH ] ;
   then HOST_DOCKER_LINKAGE="-e DOCKER_CERT_PATH=$DOCKER_CERT_PATH $HOST_DOCKER_LINKAGE"
 fi;
 
+[ -d "$HOME/.alpine" ] || mkdir "$HOME/.alpine"
+[ -d "$HOME/.alpine/local" ] || mkdir "$HOME/.alpine/local"
+[ -d "$HOME/.alpine/stack" ] || mkdir "$HOME/.alpine/stack"
+
+CWD="$(pwd -P)"
 
 exec docker run \
   -it \
   --rm \
   -e PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
-  -e HOME=$HOME \
-  -e STACK_OPTS="--system-ghc --allow-different-user --skip-ghc-check --ghc-options '-optl-static'" \
+  -e HOME="$HOME" \
+  -e STACK_OPTS="--system-ghc --skip-ghc-check --ghc-options '-optl-static'" \
   $HOST_DOCKER_LINKAGE \
-  -v $HOME/.alpine/stack:$HOME/.stack \
-  -v $HOME/.alpine/local:$HOME/.local \
-  -v $HOME:$HOME \
-  -w $(pwd -P) \
-  --user $(id -u):$(id -g) \
+  --user "$(id -u):$(id -g)" \
+  --mount "type=tmpfs,target=$HOME" \
+  --mount "type=bind,source=$HOME/.alpine/local,target=$HOME/.local" \
+  --mount "type=bind,source=$HOME/.alpine/stack,target=$HOME/.stack" \
+  --mount "type=bind,source=$CWD,target=$CWD" \
+  --mount "type=bind,source=$HOME/.gnupg,target=$HOME/.gnupg" \
+  -w "$CWD" \
   andreyk0/docker-haskell-platform-alpine:latest "$@"
