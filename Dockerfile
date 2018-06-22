@@ -23,6 +23,7 @@ RUN apk update \
         libffi-dev \
         linux-headers \
         upx@testing \
+        xz \
         zlib-dev
 
 # Haskell stack
@@ -30,7 +31,8 @@ RUN apk update \
 #RUN wget -qO- https://get.haskellstack.org/ | sh
 
 # Grab a recent static binary of Stack
-ADD https://s3.amazonaws.com/static-stack/stack-1.1.2-x86_64 /usr/local/bin/stack
-RUN chmod 755 /usr/local/bin/stack
+ADD https://github.com/commercialhaskell/stack/releases/download/v1.6.5/stack-1.6.5-linux-x86_64-static.tar.gz /tmp/stack.tgz
+
+RUN cd /tmp && tar xvf stack.tgz && mv stack*/stack /usr/local/bin/ && rm -rf /tmp/stack*
 
 CMD [ "/bin/bash" ]
