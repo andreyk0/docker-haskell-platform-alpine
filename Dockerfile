@@ -26,6 +26,11 @@ RUN apk update \
         zlib-dev
 
 # Haskell stack
-RUN wget -qO- https://get.haskellstack.org/ | sh
+# TODO: this is not available at the moment
+#RUN wget -qO- https://get.haskellstack.org/ | sh
+
+# Grab a recent static binary of Stack
+ADD https://s3.amazonaws.com/static-stack/stack-1.1.2-x86_64 /usr/local/bin/stack
+RUN chmod 755 /usr/local/bin/stack
 
 CMD [ "/bin/bash" ]
