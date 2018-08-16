@@ -31,8 +31,7 @@ RUN apk update \
 #RUN wget -qO- https://get.haskellstack.org/ | sh
 
 # Grab a recent static binary of Stack
-ADD https://github.com/commercialhaskell/stack/releases/download/v1.6.5/stack-1.6.5-linux-x86_64-static.tar.gz /tmp/stack.tgz
-
-RUN cd /tmp && tar xvf stack.tgz && mv stack*/stack /usr/local/bin/ && rm -rf /tmp/stack*
+ADD https://github.com/nh2/stack/releases/download/v1.6.5/stack-1.7.1-x86_64-unofficial-fully-static-musl /usr/local/bin/stack
+RUN chmod 755 /usr/local/bin/stack
 
 CMD [ "/bin/bash" ]
