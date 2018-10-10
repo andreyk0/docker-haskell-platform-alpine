@@ -22,7 +22,9 @@ RUN apk update \
         gnupg \
         libffi-dev \
         linux-headers \
+        perl-utils \
         upx@testing \
+        wget \
         xz \
         zlib-dev
 
@@ -31,7 +33,13 @@ RUN apk update \
 #RUN wget -qO- https://get.haskellstack.org/ | sh
 
 # Grab a recent static binary of Stack
-ADD https://github.com/nh2/stack/releases/download/v1.6.5/stack-1.7.1-x86_64-unofficial-fully-static-musl /usr/local/bin/stack
-RUN chmod 755 /usr/local/bin/stack
+RUN cd /tmp \
+ && wget https://github.com/commercialhaskell/stack/releases/download/v1.9.0.1/stack-1.9.0.1-linux-x86_64-static.tar.gz \
+ && (cat stack*.tar.gz | shasum -a 256 | grep d7ed4ae8dc2ffe136b5f2dc3c41ccfe9d51be58c5d3dbf190f2372ed36207da9) \
+ && tar xvf stack-*.tar.gz \
+ && mv -v stack*static/stack /usr/local/bin/stack \
+ && rm -rf /tmp/stack-* \
+ && chmod 755 /usr/local/bin/stack
+
 
 CMD [ "/bin/bash" ]
