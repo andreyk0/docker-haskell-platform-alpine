@@ -23,10 +23,20 @@ RUN apk update \
         libffi-dev \
         linux-headers \
         perl-utils \
-        upx@testing \
         wget \
         xz \
         zlib-dev
+
+
+# Grab a UPX binary
+RUN cd /tmp \
+  && wget https://github.com/upx/upx/releases/download/v3.95/upx-3.95-i386_linux.tar.xz \
+  && (cat upx-*xz | shasum -a 256 | grep 962e29fc01490a2a2da25a170f28a5d5933f3d7a695e8b2807c3eab1a4b66d05) \
+  && tar xvf upx-* \
+  && mv -v upx-*/upx /usr/local/bin/upx \
+  && rm -rf /tmp/upx-* \
+  && chmod 755 /usr/local/bin/upx
+
 
 # Haskell stack
 # TODO: this is not available at the moment
